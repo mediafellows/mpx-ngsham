@@ -139,7 +139,6 @@
                 }
               }
             }
-            tElement[0].innerHTML = holder.innerHTML;
             tElement[0].innerHTML = _this.convertTemplate(tElement[0].innerHTML, ng1Name);
             return _this.linkFn(PEH, cachedAttributes, ng1Name);
           };
