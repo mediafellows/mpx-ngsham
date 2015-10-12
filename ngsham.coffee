@@ -225,5 +225,3 @@ do (window) ->
     @component
 
   null
-
-  ngshim('mpx-frontend', 1, '/views/')

@@ -250,8 +250,7 @@
       };
       return this.component;
     };
-    null;
-    return ngshim('mpx-frontend', 1, '/views/');
+    return null;
   })(window);
 
 }).call(this);
