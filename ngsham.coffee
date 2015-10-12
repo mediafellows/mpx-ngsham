@@ -83,7 +83,7 @@ do (window) ->
         controller:       controllerFn
         controllerAs:     ng1Name
         scope:            false
-        compile:          @DOMToNg1 ng1Name, PEH
+        compile:          @compileFn ng1Name, PEH
         templateUrl:      templateUrl
         transclude:       !isDecorator
 
@@ -92,28 +92,27 @@ do (window) ->
     ################################################################################
     # Converts an Ng2 string template to Ng1 string template.
 
-    @templateToNg1 = (templateString, controllerAs) ->
+    @convertTemplate = (templateString, controllerAs) ->
       return null unless templateString && controllerAs
       replaceAttrKnown      = "$1=\"$2#{controllerAs}.$3"
       replaceAttrCustom     = "$1$2$3=\"$4#{controllerAs}.$5"
       replaceInterpolation  = "$1#{controllerAs}.$2"
       replaceNgFor          = "ng-repeat=\"$3 in #{controllerAs}.$5"
-      templateString        = templateString.replace(/=(["'])___/g, "=$1#{controllerAs}.")
+      templateString        = templateString.replace(/___/g, "#{controllerAs}.")
       templateString        = templateString.replace(/bind-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, '[$1]="$2"')
       templateString        = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"")
       templateString        = templateString.replace(/\((click)\)/g, 'ng-click')
       templateString        = templateString.replace(/(hidden)="/g, 'ng-hide="')
       templateString        = templateString.replace(/(ng-click|ng-if|ng-change|ng-hide)="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrKnown)
       templateString        = templateString.replace(/([\(\[])([a-zA-Z0-9-_]+)([\)\]])="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrCustom)
-      templateString        = templateString.replace(/({{\s?)([a-zA-Z0-9_$]+)/g, replaceInterpolation)
       templateString        = templateString.replace(/((\*ng-for="#)([a-zA-Z0-9-_]+)( of )([a-zA-Z0-9-_]+))/g, replaceNgFor)
       templateString        = templateString.replace(/<content select="([a-zA-Z0-9-_]+)">(|.+)<\/content>/g, "<div transclude-id=\"$1\">$2</div>")
       templateString
 
     ################################################################################
-    # Converts an Ng2 DOM template to Ng1 DOM template.
+    # Prepares template and attributes.
 
-    @DOMToNg1 = (ng1Name, PEH) ->
+    @compileFn = (ng1Name, PEH) ->
       (tElement) =>
         attrs = tElement[0].attributes
         cachedAttributes =
@@ -130,13 +129,14 @@ do (window) ->
               if @isNg2P(name) then cachedAttributes.boundProperties[@dash2Camel(name.replace(/^bind-|[\[\]]/g, ''))] = value
               if @isNg2E(name) then cachedAttributes.boundEvents[name.replace(/^on-/, '')] = value
 
-        tElement[0].innerHTML = @templateToNg1 tElement[0].innerHTML, ng1Name
-        @ng2Shim(PEH, cachedAttributes, ng1Name)
+        tElement[0].innerHTML = holder.innerHTML
+        tElement[0].innerHTML = @convertTemplate tElement[0].innerHTML, ng1Name
+        @linkFn(PEH, cachedAttributes, ng1Name)
 
     ################################################################################
     # Creates a link function WHICH YOU SHOULD PRETEND DOES NOT EXIST.
 
-    @ng2Shim = (PEH, cachedAttributes, name) ->
+    @linkFn = (PEH, cachedAttributes, name) ->
       (scope, element, attrs, ctrl, transclude) ->
 
         ################################################################################

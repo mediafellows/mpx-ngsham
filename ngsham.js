@@ -83,7 +83,7 @@
           controller: controllerFn,
           controllerAs: ng1Name,
           scope: false,
-          compile: this.DOMToNg1(ng1Name, PEH),
+          compile: this.compileFn(ng1Name, PEH),
           templateUrl: templateUrl,
           transclude: !isDecorator
         };
@@ -91,7 +91,7 @@
           return DDO;
         });
       };
-      this.templateToNg1 = function(templateString, controllerAs) {
+      this.convertTemplate = function(templateString, controllerAs) {
         var replaceAttrCustom, replaceAttrKnown, replaceInterpolation, replaceNgFor;
         if (!(templateString && controllerAs)) {
           return null;
@@ -100,19 +100,18 @@
         replaceAttrCustom = "$1$2$3=\"$4" + controllerAs + ".$5";
         replaceInterpolation = "$1" + controllerAs + ".$2";
         replaceNgFor = "ng-repeat=\"$3 in " + controllerAs + ".$5";
-        templateString = templateString.replace(/=(["'])___/g, "=$1" + controllerAs + ".");
+        templateString = templateString.replace(/___/g, controllerAs + ".");
         templateString = templateString.replace(/bind-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, '[$1]="$2"');
         templateString = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"");
         templateString = templateString.replace(/\((click)\)/g, 'ng-click');
         templateString = templateString.replace(/(hidden)="/g, 'ng-hide="');
         templateString = templateString.replace(/(ng-click|ng-if|ng-change|ng-hide)="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrKnown);
         templateString = templateString.replace(/([\(\[])([a-zA-Z0-9-_]+)([\)\]])="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrCustom);
-        templateString = templateString.replace(/({{\s?)([a-zA-Z0-9_$]+)/g, replaceInterpolation);
         templateString = templateString.replace(/((\*ng-for="#)([a-zA-Z0-9-_]+)( of )([a-zA-Z0-9-_]+))/g, replaceNgFor);
         templateString = templateString.replace(/<content select="([a-zA-Z0-9-_]+)">(|.+)<\/content>/g, "<div transclude-id=\"$1\">$2</div>");
         return templateString;
       };
-      this.DOMToNg1 = function(ng1Name, PEH) {
+      this.compileFn = function(ng1Name, PEH) {
         return (function(_this) {
           return function(tElement) {
             var a, attrs, cachedAttributes, name, value;
@@ -140,12 +139,13 @@
                 }
               }
             }
-            tElement[0].innerHTML = _this.templateToNg1(tElement[0].innerHTML, ng1Name);
-            return _this.ng2Shim(PEH, cachedAttributes, ng1Name);
+            tElement[0].innerHTML = holder.innerHTML;
+            tElement[0].innerHTML = _this.convertTemplate(tElement[0].innerHTML, ng1Name);
+            return _this.linkFn(PEH, cachedAttributes, ng1Name);
           };
         })(this);
       };
-      this.ng2Shim = function(PEH, cachedAttributes, name) {
+      this.linkFn = function(PEH, cachedAttributes, name) {
         return function(scope, element, attrs, ctrl, transclude) {
           var a, fn1, h, ref, ref1, v, watchedExpressions, watchedProperties;
           ref = cachedAttributes.boundEvents;
