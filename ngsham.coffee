@@ -80,7 +80,7 @@ do (window) ->
 
       DDO =
         restrict:         restrict
-        controller:       controllerFn
+        controller:       @inject(controllerFn, options.inject)
         controllerAs:     ng1Name
         scope:            false
         compile:          @compileFn ng1Name, PEH
@@ -88,6 +88,13 @@ do (window) ->
         transclude:       !isDecorator
 
       angular.module(appName).directive(ng1Name, () -> DDO)
+
+    ################################################################################
+    # Extract injected controller dependencies...
+
+    @inject = (fn, deps) ->
+      fn['$inject'] = deps
+      fn
 
     ################################################################################
     # Converts an Ng2 string template to Ng1 string template.
@@ -215,8 +222,8 @@ do (window) ->
     @component.ctrl = (name, fn) ->
       angular.module(appName).controller(name, fn)
 
-    @component.fact = (name, fn) ->
-      angular.module(appName).factory(name, fn)
+    @component.fact = (name, options) =>
+      angular.module(appName).factory(name, @inject(options.class, options.inject))
 
     ################################################################################
     # ngshim will attach the component generator to window as "ngsham"

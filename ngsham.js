@@ -80,7 +80,7 @@
         }
         DDO = {
           restrict: restrict,
-          controller: controllerFn,
+          controller: this.inject(controllerFn, options.inject),
           controllerAs: ng1Name,
           scope: false,
           compile: this.compileFn(ng1Name, PEH),
@@ -90,6 +90,10 @@
         return angular.module(appName).directive(ng1Name, function() {
           return DDO;
         });
+      };
+      this.inject = function(fn, deps) {
+        fn['$inject'] = deps;
+        return fn;
       };
       this.convertTemplate = function(templateString, controllerAs) {
         var replaceAttrCustom, replaceAttrKnown, replaceInterpolation, replaceNgFor;
@@ -244,9 +248,11 @@
       this.component.ctrl = function(name, fn) {
         return angular.module(appName).controller(name, fn);
       };
-      this.component.fact = function(name, fn) {
-        return angular.module(appName).factory(name, fn);
-      };
+      this.component.fact = (function(_this) {
+        return function(name, options) {
+          return angular.module(appName).factory(name, _this.inject(options["class"], options.inject));
+        };
+      })(this);
       return this.component;
     };
     return null;
