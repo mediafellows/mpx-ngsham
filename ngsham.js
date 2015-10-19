@@ -129,15 +129,15 @@
               if (attrs.hasOwnProperty(a)) {
                 name = attrs[a].name;
                 value = attrs[a].value;
-                if (!_this.isNg2Attr(name)) {
+                if ((name != null) && !_this.isNg2Attr(name)) {
                   if (name !== ng1Name) {
                     cachedAttributes.staticAttrs[name] = value;
                   }
                 } else {
-                  if (_this.isNg2P(name)) {
+                  if ((name != null) && _this.isNg2P(name)) {
                     cachedAttributes.boundProperties[_this.dash2Camel(name.replace(/^bind-|[\[\]]/g, ''))] = value;
                   }
-                  if (_this.isNg2E(name)) {
+                  if ((name != null) && _this.isNg2E(name)) {
                     cachedAttributes.boundEvents[name.replace(/^on-/, '')] = value;
                   }
                 }

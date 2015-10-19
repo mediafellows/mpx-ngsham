@@ -130,11 +130,11 @@ do (window) ->
           if attrs.hasOwnProperty(a)
             name = attrs[a].name
             value = attrs[a].value
-            if !@isNg2Attr(name)
+            if name? && !@isNg2Attr(name)
               cachedAttributes.staticAttrs[name] = value unless name == ng1Name
             else
-              if @isNg2P(name) then cachedAttributes.boundProperties[@dash2Camel(name.replace(/^bind-|[\[\]]/g, ''))] = value
-              if @isNg2E(name) then cachedAttributes.boundEvents[name.replace(/^on-/, '')] = value
+              if name? && @isNg2P(name) then cachedAttributes.boundProperties[@dash2Camel(name.replace(/^bind-|[\[\]]/g, ''))] = value
+              if name? && @isNg2E(name) then cachedAttributes.boundEvents[name.replace(/^on-/, '')] = value
 
         tElement[0].innerHTML = @convertTemplate tElement[0].innerHTML, ng1Name
         @linkFn(PEH, cachedAttributes, ng1Name)
