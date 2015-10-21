@@ -83,7 +83,7 @@
           controller: this.inject(controllerFn, options.inject),
           controllerAs: ng1Name,
           scope: false,
-          compile: this.compileFn(ng1Name, PEH),
+          compile: this.compileFn(ng1Name, PEH, options.autoNamespace),
           templateUrl: templateUrl,
           transclude: !isDecorator
         };
@@ -95,8 +95,9 @@
         fn['$inject'] = deps;
         return fn;
       };
-      this.convertTemplate = function(templateString, controllerAs) {
+      this.convertTemplate = function(templateString, controllerAs, autoNamespace) {
         var replaceAttrCustom, replaceAttrKnown, replaceInterpolation, replaceNgFor;
+        autoNamespace || (autoNamespace = true);
         if (!(templateString && controllerAs)) {
           return null;
         }
@@ -109,13 +110,15 @@
         templateString = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"");
         templateString = templateString.replace(/\((click)\)/g, 'ng-click');
         templateString = templateString.replace(/(hidden)="/g, 'ng-hide="');
-        templateString = templateString.replace(/(ng-click|ng-if|ng-change|ng-hide)="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrKnown);
-        templateString = templateString.replace(/([\(\[])([a-zA-Z0-9-_]+)([\)\]])="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrCustom);
-        templateString = templateString.replace(/((\*ng-for="#)([a-zA-Z0-9-_]+)( of )([a-zA-Z0-9-_]+))/g, replaceNgFor);
+        if (autoNamespace) {
+          templateString = templateString.replace(/(ng-click|ng-if|ng-change|ng-hide)="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrKnown);
+          templateString = templateString.replace(/([\(\[])([a-zA-Z0-9-_]+)([\)\]])="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrCustom);
+          templateString = templateString.replace(/((\*ng-for="#)([a-zA-Z0-9-_]+)( of )([a-zA-Z0-9-_]+))/g, replaceNgFor);
+        }
         templateString = templateString.replace(/<content select="([a-zA-Z0-9-_]+)">(|.+)<\/content>/g, "<div transclude-id=\"$1\">$2</div>");
         return templateString;
       };
-      this.compileFn = function(ng1Name, PEH) {
+      this.compileFn = function(ng1Name, PEH, autoNamespace) {
         return (function(_this) {
           return function(tElement) {
             var a, attrs, cachedAttributes, name, value;
@@ -143,7 +146,7 @@
                 }
               }
             }
-            tElement[0].innerHTML = _this.convertTemplate(tElement[0].innerHTML, ng1Name);
+            tElement[0].innerHTML = _this.convertTemplate(tElement[0].innerHTML, ng1Name, autoNamespace);
             return _this.linkFn(PEH, cachedAttributes, ng1Name);
           };
         })(this);
