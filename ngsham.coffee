@@ -100,7 +100,7 @@ do (window) ->
     # Converts an Ng2 string template to Ng1 string template.
 
     @convertTemplate = (templateString, controllerAs, autoNamespace) ->
-      autoNamespace ||= true
+      autoNamespace = true if !autoNamespace?
       return null unless templateString && controllerAs
       replaceAttrKnown      = "$1=\"$2#{controllerAs}.$3"
       replaceAttrCustom     = "$1$2$3=\"$4#{controllerAs}.$5"

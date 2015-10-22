@@ -97,7 +97,9 @@
       };
       this.convertTemplate = function(templateString, controllerAs, autoNamespace) {
         var replaceAttrCustom, replaceAttrKnown, replaceInterpolation, replaceNgFor;
-        autoNamespace || (autoNamespace = true);
+        if (autoNamespace == null) {
+          autoNamespace = true;
+        }
         if (!(templateString && controllerAs)) {
           return null;
         }
