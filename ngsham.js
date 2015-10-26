@@ -23,8 +23,7 @@
     };
     angular1ComponentCreator = function(appName, componentsDir) {
       this.component = function(name, options) {
-        var DDO, PEH, controllerFn, defaultEvents, defaultHostEvents, defaultProperties, e, isDecorator, names, nativeName, ng1Name, p, prefix, prefixedName, restrict, selector, selectorParts, templateUrl;
-        names = {};
+        var DDO, PEH, controllerFn, defaultEvents, defaultHostEvents, defaultProperties, e, isDecorator, nativeName, ng1Name, p, prefix, prefixedName, restrict, selector, selectorParts, templateUrl;
         PEH = {
           properties: [],
           events: [],
@@ -42,13 +41,6 @@
         ng1Name = this.dash2Camel(prefixedName);
         restrict = isDecorator ? 'A' : 'E';
         controllerFn = options["class"];
-        if (names[ng1Name]) {
-          names[ng1Name] += 1;
-        } else {
-          names[ng1Name] = 0;
-        }
-        ng1Name = ng1Name + names[ng1Name];
-        console.log(ng1Name);
         if (isDecorator) {
           templateUrl = null;
         } else if (options.view != null) {

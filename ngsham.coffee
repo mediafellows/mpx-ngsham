@@ -32,8 +32,6 @@ do (window) ->
 
     @component = (name, options) ->
 
-      names = {}
-
       PEH = properties:[], events:[], hostEvents:[]
 
       defaultProperties   = []
@@ -49,15 +47,6 @@ do (window) ->
       ng1Name             = @dash2Camel prefixedName
       restrict            = if isDecorator then 'A' else 'E'
       controllerFn        = options.class
-
-      if names[ng1Name]
-        names[ng1Name] += 1
-      else
-        names[ng1Name] = 0
-
-      ng1Name = ng1Name + names[ng1Name]
-
-      console.log ng1Name
 
       if      isDecorator
       then    templateUrl = null
