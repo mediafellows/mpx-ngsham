@@ -23,7 +23,8 @@
     };
     angular1ComponentCreator = function(appName, componentsDir) {
       this.component = function(name, options) {
-        var DDO, PEH, controllerFn, defaultEvents, defaultHostEvents, defaultProperties, e, isDecorator, nativeName, ng1Name, p, prefix, prefixedName, restrict, selector, selectorParts, templateUrl;
+        var DDO, PEH, controllerFn, defaultEvents, defaultHostEvents, defaultProperties, e, isDecorator, names, nativeName, ng1Name, p, prefix, prefixedName, restrict, selector, selectorParts, templateUrl;
+        names = {};
         PEH = {
           properties: [],
           events: [],
@@ -41,6 +42,13 @@
         ng1Name = this.dash2Camel(prefixedName);
         restrict = isDecorator ? 'A' : 'E';
         controllerFn = options["class"];
+        if (names[ng1Name]) {
+          names[ng1Name] += 1;
+        } else {
+          names[ng1Name] = 0;
+        }
+        ng1Name = ng1Name + names[ng1Name];
+        console.log(ng1Name);
         if (isDecorator) {
           templateUrl = null;
         } else if (options.view != null) {
@@ -107,12 +115,12 @@
         replaceAttrCustom = "$1$2$3=\"$4" + controllerAs + ".$5";
         replaceInterpolation = "$1" + controllerAs + ".$2";
         replaceNgFor = "ng-repeat=\"$3 in " + controllerAs + ".$5";
-        templateString = templateString.replace(/___/g, controllerAs + ".");
         templateString = templateString.replace(/bind-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, '[$1]="$2"');
         templateString = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"");
         templateString = templateString.replace(/\((click)\)/g, 'ng-click');
         templateString = templateString.replace(/(hidden)="/g, 'ng-hide="');
         if (autoNamespace) {
+          templateString = templateString.replace(/___/g, controllerAs + ".");
           templateString = templateString.replace(/(ng-click|ng-if|ng-change|ng-hide)="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrKnown);
           templateString = templateString.replace(/([\(\[])([a-zA-Z0-9-_]+)([\)\]])="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrCustom);
           templateString = templateString.replace(/((\*ng-for="#)([a-zA-Z0-9-_]+)( of )([a-zA-Z0-9-_]+))/g, replaceNgFor);

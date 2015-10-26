@@ -32,6 +32,8 @@ do (window) ->
 
     @component = (name, options) ->
 
+      names = {}
+
       PEH = properties:[], events:[], hostEvents:[]
 
       defaultProperties   = []
@@ -47,6 +49,15 @@ do (window) ->
       ng1Name             = @dash2Camel prefixedName
       restrict            = if isDecorator then 'A' else 'E'
       controllerFn        = options.class
+
+      if names[ng1Name]
+        names[ng1Name] += 1
+      else
+        names[ng1Name] = 0
+
+      ng1Name = ng1Name + names[ng1Name]
+
+      console.log ng1Name
 
       if      isDecorator
       then    templateUrl = null
@@ -106,12 +117,12 @@ do (window) ->
       replaceAttrCustom     = "$1$2$3=\"$4#{controllerAs}.$5"
       replaceInterpolation  = "$1#{controllerAs}.$2"
       replaceNgFor          = "ng-repeat=\"$3 in #{controllerAs}.$5"
-      templateString        = templateString.replace(/___/g, "#{controllerAs}.")
       templateString        = templateString.replace(/bind-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, '[$1]="$2"')
       templateString        = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"")
       templateString        = templateString.replace(/\((click)\)/g, 'ng-click')
       templateString        = templateString.replace(/(hidden)="/g, 'ng-hide="')
       if autoNamespace
+        templateString        = templateString.replace(/___/g, "#{controllerAs}.")
         templateString        = templateString.replace(/(ng-click|ng-if|ng-change|ng-hide)="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrKnown)
         templateString        = templateString.replace(/([\(\[])([a-zA-Z0-9-_]+)([\)\]])="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrCustom)
         templateString        = templateString.replace(/((\*ng-for="#)([a-zA-Z0-9-_]+)( of )([a-zA-Z0-9-_]+))/g, replaceNgFor)
