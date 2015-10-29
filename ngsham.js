@@ -22,6 +22,13 @@
       return v();
     };
     angular1ComponentCreator = function(appName, componentsDir) {
+      var inject;
+      inject = function(fn, deps) {
+        var args;
+        args = [].concat(deps || []);
+        args.push(fn);
+        return args;
+      };
       this.component = function(name, options) {
         var DDO, PEH, controllerFn, defaultEvents, defaultHostEvents, defaultProperties, e, isDecorator, nativeName, ng1Name, p, prefix, prefixedName, restrict, selector, selectorParts, templateUrl;
         PEH = {
@@ -80,7 +87,7 @@
         }
         DDO = {
           restrict: restrict,
-          controller: this.inject(controllerFn, options.inject),
+          controller: inject(controllerFn, options.inject),
           controllerAs: ng1Name,
           scope: false,
           compile: this.compileFn(ng1Name, PEH, options.autoNamespace),
@@ -90,10 +97,6 @@
         return angular.module(appName).directive(ng1Name, function() {
           return DDO;
         });
-      };
-      this.inject = function(fn, deps) {
-        fn['$inject'] = deps;
-        return fn;
       };
       this.convertTemplate = function(templateString, controllerAs, autoNamespace) {
         var replaceAttrCustom, replaceAttrKnown, replaceInterpolation, replaceNgFor;
@@ -250,12 +253,12 @@
       this.attrs2String = function(n, v) {
         return n + "=\"" + v + "\"";
       };
-      this.component.ctrl = function(name, fn) {
-        return angular.module(appName).controller(name, fn);
+      this.component.ctrl = function(name, options) {
+        return angular.module(appName).controller(name, inject(options["class"], options.inject));
       };
       this.component.fact = (function(_this) {
         return function(name, options) {
-          return angular.module(appName).factory(name, _this.inject(options["class"], options.inject));
+          return angular.module(appName).factory(name, inject(options["class"], options.inject));
         };
       })(this);
       return this.component;

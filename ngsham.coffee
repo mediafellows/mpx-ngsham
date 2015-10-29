@@ -30,6 +30,14 @@ do (window) ->
     # TODO: NgSham renamed to NgShorthand (ngsh) ??
     # TODO: Re-fix all this PEH stuff... (no more PEH and just host?)
 
+    ################################################################################
+    # Helper function to build factories/controller arguments
+
+    inject = (fn, deps) ->
+      args = [].concat(deps || [])
+      args.push fn
+      args
+
     @component = (name, options) ->
 
       PEH = properties:[], events:[], hostEvents:[]
@@ -80,7 +88,7 @@ do (window) ->
 
       DDO =
         restrict:         restrict
-        controller:       @inject(controllerFn, options.inject)
+        controller:       inject(controllerFn, options.inject)
         controllerAs:     ng1Name
         scope:            false
         compile:          @compileFn(ng1Name, PEH, options.autoNamespace)
@@ -88,13 +96,6 @@ do (window) ->
         transclude:       !isDecorator
 
       angular.module(appName).directive(ng1Name, () -> DDO)
-
-    ################################################################################
-    # Extract injected controller dependencies...
-
-    @inject = (fn, deps) ->
-      fn['$inject'] = deps
-      fn
 
     ################################################################################
     # Converts an Ng2 string template to Ng1 string template.
@@ -221,11 +222,11 @@ do (window) ->
     ################################################################################
     # Shortcuts to create OOP controllers/services with the known module name.
 
-    @component.ctrl = (name, fn) ->
-      angular.module(appName).controller(name, fn)
+    @component.ctrl = (name, options) ->
+      angular.module(appName).controller(name, inject(options.class, options.inject))
 
     @component.fact = (name, options) =>
-      angular.module(appName).factory(name, @inject(options.class, options.inject))
+      angular.module(appName).factory(name, inject(options.class, options.inject))
 
     ################################################################################
     # ngshim will attach the component generator to window as "ngsham"
