@@ -51,7 +51,7 @@
         if (isDecorator) {
           templateUrl = null;
         } else if (options.view != null) {
-          templateUrl = componentsDir + prefix + '/' + options.view + '.html';
+          templateUrl = options.view;
         } else {
           templateUrl = componentsDir + selectorParts.join('/') + prefix + '/' + nativeName + '/' + nativeName + '.html';
         }
