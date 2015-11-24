@@ -59,7 +59,7 @@ do (window) ->
       if      isDecorator
       then    templateUrl = null
       else if options.view?
-      then    templateUrl = componentsDir + prefix + '/' + options.view + '.html'
+      then    templateUrl = options.view
       else    templateUrl = componentsDir + selectorParts.join('/') + prefix + '/' + nativeName + '/' + nativeName + '.html'
 
       for p of defaultProperties
