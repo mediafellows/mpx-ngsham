@@ -1,11 +1,17 @@
 {
   "name": "ngsham",
-  "version": "0.0.1",
-  "description": "Terse, functional syntax for declaring WebComponent-style Angular Directives.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Jason Grier",
-  "license": "MIT"
+  "version": "0.0.2",
+  "description": "Yet another Angular 2 polyfill.",
+  "main": "ngshim.js",
+  "scripts": {},
+  "author": "Jason Grier <j@hem.rocks>",
+  "license": "CC",
+  "devDependencies": {
+    "coffee-script": "^1.10.0",
+    "del": "^2.1.0",
+    "fs-extra": "^0.26.2",
+    "lodash": "^3.10.1",
+    "node-notifier": "^4.3.1",
+    "typescript": "^1.6.2"
+  }
 }

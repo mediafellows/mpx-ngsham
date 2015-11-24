@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "removeComments": true
+  },
+  "files":
+  [
+    "dist/ngsham.ts",
+    "ngsham.d.ts"
+  ]
+}
