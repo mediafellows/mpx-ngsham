@@ -2,7 +2,7 @@
 /// <reference path="./abstract_component.ts"/>
 /// <reference path="./abstract_component.1.x.ts"/>
 
-class ComponentOld extends AbstractComponentOne {
+class ComponentLegacy extends AbstractComponentOne {
   protected DDO (CDO) {
     var DDO = {
       restrict:     CDO.restrict,

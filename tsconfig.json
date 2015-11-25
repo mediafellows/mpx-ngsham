@@ -16,10 +16,10 @@
     "./src/ts/abstract_component.1.x.ts",
     "./src/ts/abstract_component.ts",
     "./src/ts/component.1.3.ts",
-    "./src/ts/component.1.4.shambolic.ts",
     "./src/ts/component.1.4.ts",
     "./src/ts/component.1.5.ts",
     "./src/ts/component.2.alpha.ts",
+    "./src/ts/component.legacy.ts",
     "./src/ts/ngshim.ts",
     "./src/ts/reflection.ts",
     "./src/ts/util.ts"
