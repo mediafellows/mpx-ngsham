@@ -2,7 +2,7 @@
   "name": "ngsham",
   "version": "0.0.2",
   "description": "Yet another Angular 2 polyfill.",
-  "main": "ngshim.js",
+  "main": "./lib/ngsham/ngshim.js",
   "scripts": {},
   "author": "Jason Grier <j@hem.rocks>",
   "license": "CC",
@@ -12,6 +12,7 @@
     "fs-extra": "^0.26.2",
     "lodash": "^3.10.1",
     "node-notifier": "^4.3.1",
+    "typedoc": "^0.3.12",
     "typescript": "^1.6.2"
   }
 }

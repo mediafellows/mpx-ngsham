@@ -1,1 +1,1 @@
-require('coffee-script').eval(require('fs-extra').readFileSync('./build.coffee', 'utf-8'));
+require('coffee-script').eval(require('fs-extra').readFileSync('./lib/scirpts/server.coffee', 'utf-8'));

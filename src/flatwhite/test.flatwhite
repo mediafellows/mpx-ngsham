@@ -1,5 +1,0 @@
-'use strict'
-
-var bar, baz, foo = () ->
-  if (bar > baz)
-    console.log('qux')
