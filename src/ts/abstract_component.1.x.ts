@@ -2,7 +2,7 @@
 /// <reference path="./abstract_component.ts"/>
 /// <reference path="./reflection.ts"/>
 
-abstract class AbstractComponentOne extends AbstractComponent {
+abstract class AbstractComponentOneX extends AbstractComponent {
 
   // TODO: Split this class into: AbstractAnyComponent, AbstractShambolicComponent, AbstractShamComponent
 
@@ -12,7 +12,7 @@ abstract class AbstractComponentOne extends AbstractComponent {
    * @return {Array<string>}
    */
   protected reflectParams (fn: Function): Ng1InjectionParams {
-    
+
   }
 
   /**
