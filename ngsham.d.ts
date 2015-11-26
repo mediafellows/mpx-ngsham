@@ -1,56 +1,12 @@
-declare var _: lodash;
-declare var esprima: esprima;
-declare var angular: Angular1_3|Angular1_4|Angular1_5|Angular2Alpha|Angular2;
+declare var _: any;
+declare var angular: any;
+declare var NgShamFactory: any;
 
 /**
- * HACK: Please replace this with some more-or-less official spec!
+ * HACK: Or??
  */
-interface lodash {
-  each: Function;
-  empty: Function;
-}
-
-/**
- * HACK: Or is it??
- */
-interface esprima {
-  // Needed in case DIY reflection proves cumbersome.
-}
-
-/**
- * HACK: Or is it??
- */
-interface Angular1_3 {
-  forEach: Function;
-  directive: Function;
-}
-
-/**
- * HACK: Or is it??
- */
-interface Angular1_4 extends Angular1_3 {
-
-}
-
-/**
- * HACK: Or is it??
- */
-interface Angular1_5 extends Angular1_4  {
-
-}
-
-/**
- * HACK: Or is it??
- */
-interface Angular2Alpha {
-  forEach: Function;
-}
-
-/**
- * HACK: Or is it??
- */
-interface Angular2 {
-  forEach: Function;
+interface ComponentCreators {
+  component: Function;
 }
 
 /**
@@ -88,6 +44,7 @@ interface Window {
   ngsham: any;
   ngshim: any;
   ngshambles: any;
+  angular: any;
 }
 
 /**
@@ -115,4 +72,21 @@ interface ShamAnnotationsObject {
   properties: Array<string>;
   events: Array<string>;
   host: Array<string>;
+}
+
+/**
+ * Expected when using floral (Typescript Ng2) syntax.
+ */
+interface Ng2CDO {
+  selector: string
+}
+
+/**
+ * How Sham's config is passed around.
+ */
+interface ShamConfigObject {
+  appName: string;
+  angularVersion: number;
+  componentsDir: string;
+  forceUseComponentCreator: any;
 }
