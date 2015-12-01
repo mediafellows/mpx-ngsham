@@ -21,8 +21,21 @@ namespace NgSham {
      * @return {[type]}
      */
     window.ngshim = function (appName, angularVersion, componentsDir) {
-      window.ngsham     = NgShamFactory.getInstance.shim(appName, angularVersion, componentsDir);
-      window.ngshambles = NgShamFactory.getInstance.shim(appName, angularVersion, componentsDir, 'ComponentLegacy');
+      var sham = NgSham.NgShamFactory.getInstance();
+
+      window.ngsham = sham.shim({
+        appName: appName,
+        angularVersion: angularVersion,
+        componentsDir: componentsDir,
+        forceUseComponentCreator: false
+      }).bind(sham.componentCreator);
+
+      window.ngshambles = sham.shim({
+        appName: appName,
+        angularVersion: angularVersion,
+        componentsDir: componentsDir,
+        forceUseComponentCreator: 'ComponentLegacy'
+      }).bind(sham.componentCreator);
     }
   }
 

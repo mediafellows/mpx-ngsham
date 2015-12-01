@@ -3,9 +3,9 @@ declare var angular: any;
 declare var NgShamFactory: any;
 
 /**
- * HACK: Or??
+ * TODO: Describe this type more thoroughly. 
  */
-interface ComponentCreators {
+interface ComponentCreator {
   component: Function;
 }
 
@@ -52,6 +52,7 @@ interface Window {
  * Version-agnostic DDO (Directive Definition Object).
  */
 interface ShamCDO {
+  selector: string;
   ng1Name: string;
   restrict: string;
   templateUrl: string|boolean;

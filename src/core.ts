@@ -1,17 +1,11 @@
-/// <reference path="./component/component.1.3.ts"/>
-/// <reference path="./component/component.1.4.ts"/>
-/// <reference path="./component/component.1.5.ts"/>
-/// <reference path="./component/component.2.alpha.ts"/>
-/// <reference path="./component/component.legacy.ts"/>
-
 namespace NgSham {
 
-  class NgShamFactory {
+  export class NgShamFactory {
 
     private static _instance: NgShamFactory = new NgShamFactory();
 
     private config: ShamConfigObject;
-    private componentCreator: ComponentCreators;
+    public componentCreator: ComponentCreator;
 
     constructor () {
       if (NgShamFactory._instance) throw new Error('Singleton!');
@@ -28,7 +22,7 @@ namespace NgSham {
      */
     public configure (config: ShamConfigObject): void {
       this.config = config;
-      this.componentCreator = new ComponentCreators[
+      this.componentCreator = new NgSham[
         typeof this.config.forceUseComponentCreator === 'string'
         ? this.config.forceUseComponentCreator
         : this.version()

@@ -5,26 +5,9 @@
   <title>blah</title>
 </head>
   <body>
-    <script>
-    var NgSham;
-    (function (NgSham) {
-        var SUPPORT_JAVASCRIPT = false;
-        if (SUPPORT_JAVASCRIPT) {
-            window.ngshim = function (appName, angularVersion, componentsDir) {
-                window.ngsham = NgShamFactory.getInstance.shim(appName, angularVersion, componentsDir);
-                window.ngshambles = NgShamFactory.getInstance.shim(appName, angularVersion, componentsDir, 'ComponentLegacy');
-            };
-        }
-        NgSham.IS_A_CLOSURE = true;
-        function bootstrap(controller) {
-            if (this.IS_A_CLOSURE)
-                throw new Error('Forbidden to call bootstrap from Javascript.');
-            NgShamFactory.getInstance.annotations2CDO(controller);
-        }
-        NgSham.bootstrap = bootstrap;
-    })(NgSham || (NgSham = {}));
-
-
-    </script>
+    <script type="text/javascript" src="/angular.js"></script>
+    <script type="text/javascript" src="/ngsham.js"></script>
+    <script type="text/javascript" src="/app.js"></script>
+    <script type="text/javascript" src="http://localhost:35729/livereload.js?snipver=1"></script>
   </body>
 </html>

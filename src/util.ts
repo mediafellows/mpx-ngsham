@@ -1,5 +1,5 @@
 namespace NgSham {
-  namespace util {
+  export namespace util {
 
     export function noop (): void {};
 

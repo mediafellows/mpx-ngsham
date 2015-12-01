@@ -1,7 +1,3 @@
-/// <reference path="../../../node_modules/reflect-metadata/reflect-metadata.d.ts"/>
-/// <reference path="../util.ts"/>
-/// <reference path="../ngsham.ts"/>
-
 module NgSham {
   export function Component (CDO: Ng2CDO) {
 

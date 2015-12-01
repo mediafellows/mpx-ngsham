@@ -1,5 +1,5 @@
 namespace NgSham {
-  abstract class AbstractComponentOneX extends AbstractComponent {
+  export abstract class AbstractComponentOneX extends AbstractComponent {
 
     // TODO: Split this class into: AbstractAnyComponent, AbstractShambolicComponent, AbstractShamComponent
 
@@ -9,15 +9,6 @@ namespace NgSham {
      * @return {Array<string>}
      */
     protected reflectParams (fn: Function): Ng1InjectionParams {
-
-    }
-
-    /**
-     * Take a decorated Typescript class and returns a ShamCDO.
-     * @param  {Object} decoratedClass
-     * @return {Object}
-     */
-    protected reflectDecor (decoratedClass: Function): ShamCDO {
 
     }
 
@@ -61,13 +52,13 @@ namespace NgSham {
           name = attrs[a].name,
           value = attrs[a].value;
 
-          if (!_.empty(name) && !util.isNg2Attr(name) && name != ng1Name) {
+          if (!_.empty(name) && !NgSham.util.isNg2Attr(name) && name != ng1Name) {
             cachedAttributes.staticAttrs[name] = value;
           } else {
-            if (!_.empty(name) && util.isNg2P(name)) {
+            if (!_.empty(name) && NgSham.util.isNg2P(name)) {
               cachedAttributes.boundProperties[util.dash2Camel(name.replace(/^bind-|[\[\]]/g, ''))] = value;
             }
-            if (!_.empty(name) && util.isNg2E(name)) {
+            if (!_.empty(name) && NgSham.util.isNg2E(name)) {
               cachedAttributes.boundEvents[name.replace(/^on-/, '')] = value
             }
           }
@@ -197,72 +188,50 @@ namespace NgSham {
     }
 
     /**
-     * Sanitizes the userland CDO ("Component Definition Object").
-     * @param  {any}               options
-     * @return {ShamOptionsObject}
-     */
-    protected coerceOptions (userlandCDO: any): ShamCDO {
-      var CDO = userlandCDO;
-      CDO.ng1Name = '';
-      CDO.restrict = '';
-      CDO.templateUrl = '';
-      CDO.properties = userlandCDO.properties || [];
-      CDO.events = userlandCDO.events || [];
-      CDO.host = userlandCDO.host || [];
-      CDO.class = userlandCDO.class || function () {};
-      CDO.inject = userlandCDO.inject || [];
-      CDO.annotations = [];
-      CDO.autoNamespace = userlandCDO.autoNamespace || true;
-      CDO.isDecorator = false;
-      return CDO;
-    }
-
-    /**
      * The basic Ng1 component strategy.
      * @param  {string} name
      * @param  {any}    userlandCDO
      * @return {[type]}
      */
-    public component (name: string, userlandCDO: any) {
+    public createComponent (): void {
 
       var
 
-      selectorParts = name.split('/'),
+      selectorParts = this.name.split('/'),
       selector      = selectorParts.pop(),
       isDecorator   = selector.indexOf('[') == 0,
       nativeName    = util.deBracket(selector),
       prefix        = selectorParts.pop(),
-      prefixedName  = prefix + '-' + nativeName,
-      CDO           = this.coerceOptions(userlandCDO);
+      prefixedName  = prefix + '-' + nativeName;
 
-      CDO.ng1Name     = util.dash2Camel(prefixedName);
-      CDO.restrict    = isDecorator ? 'A' : 'E';
-      CDO.annotations = {
+      this.CDO.ng1Name     = util.dash2Camel(prefixedName);
+      this.CDO.restrict    = isDecorator ? 'A' : 'E';
+      this.CDO.annotations = {
         properties: [],
         events:     ['change', 'close', 'save', 'destroy'],
         host:       ['click']
       };
 
-      if (CDO.templateUrl)
+      if (this.CDO.templateUrl)
         util.noop();
       else if (isDecorator)
-        CDO.templateUrl = null;
+        this.CDO.templateUrl = null;
       else
-        CDO.templateUrl = this.config.componentsDir + selectorParts.join('/') + prefix + '/' + nativeName + '/' + nativeName + '.html';
+        this.CDO.templateUrl = this.config.componentsDir + selectorParts.join('/') + prefix + '/' + nativeName + '/' + nativeName + '.html';
 
-      _.each(CDO.properties, function (x) {
-        CDO.annotations.properties.push(x); // TODO: Disallow duplicates!!!
+      _.each(this.CDO.properties, function (x) {
+        this.CDO.annotations.properties.push(x); // TODO: Disallow duplicates!!!
       });
 
-      _.each(CDO.events, function (x) {
-        CDO.annotations.events.push(x); // TODO: Disallow duplicates!!!
+      _.each(this.CDO.events, function (x) {
+        this.CDO.annotations.events.push(x); // TODO: Disallow duplicates!!!
       });
 
-      _.each(CDO.host, function (x) {
-        CDO.annotations.host.push(x); // TODO: Disallow duplicates!!!
+      _.each(this.CDO.host, function (x) {
+        this.CDO.annotations.host.push(x); // TODO: Disallow duplicates!!!
       });
 
-      angular.module(this.config.appName).directive(CDO.ng1Name, this.DDO(CDO));
+      angular.module(this.config.appName).directive(this.CDO.ng1Name, this.DDO(this.CDO));
     }
   }
 }
