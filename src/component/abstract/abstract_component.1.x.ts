@@ -231,7 +231,9 @@ namespace NgSham {
         this.CDO.annotations.host.push(x); // TODO: Disallow duplicates!!!
       });
 
-      angular.module(this.config.appName).directive(this.CDO.ng1Name, this.DDO(this.CDO));
+      console.log(this.CDO.ng1Name);
+
+      angular.module(this.config.appName, []).directive(this.CDO.ng1Name, this.DDO(this.CDO));
     }
   }
 }

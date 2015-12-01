@@ -13,7 +13,7 @@ var NgSham;
             this.config = config;
             this.componentCreator = new NgSham[typeof this.config.forceUseComponentCreator === 'string'
                 ? this.config.forceUseComponentCreator
-                : this.version()](this.config.appName, this.config.componentsDir);
+                : this.version()](this.config);
         };
         NgShamFactory.prototype.getComponentCreator = function () {
             if (!this.componentCreator)
@@ -144,6 +144,7 @@ var NgSham;
             this.config = config;
         }
         AbstractComponent.prototype.component = function (name, userlandCDOorClass) {
+            this.name = name;
             this.CDO = typeof userlandCDOorClass === 'function'
                 ? this.cdoFromFunction(userlandCDOorClass)
                 : this.cdoFromUserlandCDO(userlandCDOorClass);
@@ -316,7 +317,8 @@ var NgSham;
             _.each(this.CDO.host, function (x) {
                 this.CDO.annotations.host.push(x);
             });
-            angular.module(this.config.appName).directive(this.CDO.ng1Name, this.DDO(this.CDO));
+            console.log(this.CDO.ng1Name);
+            angular.module(this.config.appName, []).directive(this.CDO.ng1Name, this.DDO(this.CDO));
         };
         return AbstractComponentOneX;
     })(NgSham.AbstractComponent);
@@ -373,15 +375,15 @@ var NgSham;
         function ComponentLegacy() {
             _super.apply(this, arguments);
         }
-        ComponentLegacy.prototype.DDO = function (CDO) {
+        ComponentLegacy.prototype.DDO = function () {
             var DDO = {
-                restrict: CDO.restrict,
-                controller: this.inject(CDO.class, CDO.inject),
-                controllerAs: CDO.ng1Name,
+                restrict: this.CDO.restrict,
+                controller: this.inject(this.CDO.class, this.CDO.inject),
+                controllerAs: this.CDO.ng1Name,
                 scope: false,
-                compile: this.compile(CDO.ng1Name, CDO.annotations, CDO.autoNamespace),
-                templateUrl: CDO.templateUrl,
-                transclude: !CDO.isDecorator
+                compile: this.compile(this.CDO.ng1Name, this.CDO.annotations, this.CDO.autoNamespace),
+                templateUrl: this.CDO.templateUrl,
+                transclude: !this.CDO.isDecorator
             };
             return function () {
                 return DDO;
@@ -424,6 +426,7 @@ var NgSham;
     var ann;
     (function (ann) {
         function deAnnotate(fn) {
+            return fn;
         }
         ann.deAnnotate = deAnnotate;
     })(ann = NgSham.ann || (NgSham.ann = {}));

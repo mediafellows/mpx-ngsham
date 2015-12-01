@@ -3,7 +3,7 @@ declare var angular: any;
 declare var NgShamFactory: any;
 
 /**
- * TODO: Describe this type more thoroughly. 
+ * TODO: Describe this type more thoroughly.
  */
 interface ComponentCreator {
   component: Function;
@@ -62,8 +62,8 @@ interface ShamCDO {
   class: Function;
   inject: Array<string>;
   annotations: ShamAnnotationsObject;
-  autoNamespace: Boolean;
-  isDecorator: Boolean;
+  autoNamespace: boolean;
+  isDecorator: boolean;
 }
 
 /**

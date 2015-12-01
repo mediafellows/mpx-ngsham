@@ -2,9 +2,7 @@ namespace NgSham {
   export abstract class AbstractComponent {
 
     protected config: ShamConfigObject;
-
     protected name: string;
-
     protected CDO: ShamCDO;
 
     constructor (config: ShamConfigObject) {
@@ -12,6 +10,7 @@ namespace NgSham {
     }
 
     public component (name: string, userlandCDOorClass: any) {
+      this.name = name;
       this.CDO = typeof userlandCDOorClass === 'function'
         ? this.cdoFromFunction(userlandCDOorClass)
         : this.cdoFromUserlandCDO(userlandCDOorClass);

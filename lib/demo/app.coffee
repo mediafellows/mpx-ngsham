@@ -1,4 +1,4 @@
 ngshim('app', 1.4, 'components')
 
-ngsham 'hoge/[piyo]', () ->
+ngshambles 'hoge/[piyo]', () ->
   console.log 'hogepiyo!'

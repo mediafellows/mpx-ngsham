@@ -33,6 +33,7 @@ putsth = (error, stdout, stderr) ->
   fs.copySync('./dist/ngsham.js', './lib/demo/ngsham.js')
   fs.copySync('./dist/ngsham.js.map', './lib/demo/ngsham.js.map')
   fs.copySync('./node_modules/angular/angular.js', './lib/demo/angular.js')
+  fs.copySync('./node_modules/lodash/index.js', './lib/demo/lodash.js')
   try js = coffee.compile(fs.readFileSync('./lib/demo/app.coffee', 'utf-8'))
   catch error then handleError 'Coffee Script', error.toString()
   fs.writeFileSync('./lib/demo/app.js', js)

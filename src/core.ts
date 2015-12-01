@@ -26,7 +26,7 @@ namespace NgSham {
         typeof this.config.forceUseComponentCreator === 'string'
         ? this.config.forceUseComponentCreator
         : this.version()
-      ](this.config.appName, this.config.componentsDir);
+      ](this.config);
     }
 
     public getComponentCreator (): ComponentCreators {

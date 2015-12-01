@@ -1,14 +1,15 @@
 namespace NgSham {
   export class ComponentLegacy extends AbstractComponentOneX {
-    protected DDO (CDO) {
+    protected DDO () {
+
       var DDO = {
-        restrict:     CDO.restrict,
-        controller:   this.inject(CDO.class, CDO.inject),
-        controllerAs: CDO.ng1Name,
+        restrict:     this.CDO.restrict,
+        controller:   this.inject(this.CDO.class, this.CDO.inject),
+        controllerAs: this.CDO.ng1Name,
         scope:        false,
-        compile:      this.compile(CDO.ng1Name, CDO.annotations, CDO.autoNamespace),
-        templateUrl:  CDO.templateUrl,
-        transclude:   !CDO.isDecorator
+        compile:      this.compile(this.CDO.ng1Name, this.CDO.annotations, this.CDO.autoNamespace),
+        templateUrl:  this.CDO.templateUrl,
+        transclude:   !this.CDO.isDecorator
       };
 
       return function () {
