@@ -9,7 +9,7 @@ module NgSham {
         properties:     c.prototype.properties    || [],
         events:         c.prototype.events        || [],
         host:           c.prototype.host          || [],
-        class:          c.prototype.class         || function () {},
+        class:          c,
         inject:         c.prototype.inject        || [],
         annotations:    c.prototype.annotations   || {},
         autoNamespace:  c.prototype.autoNamespace || true,

@@ -4,10 +4,16 @@
 // import {Component} from 'ngsham'
 var Component = NgSham.decorators.Component;
 
-@Component('hoge/[piyo]')
+@Component({
+  selector: 'hoge/[piyo]'
+})
 class Piyo {
+  public fuga = 'This is the value of the "fuga" property on Piyo\'s controller.'
   constructor () {
-    console.log('hogehogehoge!');
+
+  }
+  private activate () {
+    console.log('piyo', this);
   }
 }
 

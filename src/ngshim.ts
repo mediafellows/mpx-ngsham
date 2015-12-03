@@ -8,21 +8,24 @@ module NgSham {
    * @return {[type]}
    */
 
-  window.ngshim = function (appName, angularVersion, componentsDir) {
+  window.ngshim = function (appName, angularVersion, componentsDir, verbose = false) {
+
     var sham = NgSham.NgShamFactory.getInstance();
 
     window.ngsham = sham.shim({
       appName: appName,
       angularVersion: angularVersion,
       componentsDir: componentsDir,
-      forceUseComponentCreator: false
+      forceUseComponentCreator: false,
+      verbose: verbose
     }).bind(sham.componentCreator);
 
     window.ngshambles = sham.shim({
       appName: appName,
       angularVersion: angularVersion,
       componentsDir: componentsDir,
-      forceUseComponentCreator: 'ComponentLegacy'
+      forceUseComponentCreator: 'ComponentLegacy',
+      verbose: verbose
     }).bind(sham.componentCreator);
 
     window.bootstrap = function (controller) {

@@ -3,13 +3,24 @@
 <head>
   <meta charset=utf-8>
   <title>blah</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .component {
+      display: block;
+      border: 5px dashed blue;
+      padding: 20px;
+    }
+  </style>
 </head>
   <body>
 
-    <section hoge-piyo>
-      <h1>Hoge Decorator</h1>
-      <hoge-fuga [title]="fuga"><!-- Hogehoge Component --></hoge-fuga>
+    <section hoge-piyo class="component">
+      <h1>Piyo, a component written in Typescript.</h1>
+      <hoge-fuga [title]="fuga" class="component">This content should be replaced.</hoge-fuga>
     </section>
+    <small><br>Made possible by ngsham.</small>
 
     <script type="text/javascript" src="/lib/lodash.js"></script>
     <script type="text/javascript" src="/lib/jquery.js"></script>

@@ -13,7 +13,7 @@ module NgSham {
     public component (name: string, CDOorFn: any) {
       this.name = name;
       this.CDO = typeof CDOorFn === 'function'
-        ? NgSham.util.coerceToShamCDO({class: CDOorFn})
+        ? NgSham.util.coerceToShamCDO({selector: name, class: CDOorFn})
         : NgSham.util.coerceToShamCDO(CDOorFn);
       this.createComponent();
     }

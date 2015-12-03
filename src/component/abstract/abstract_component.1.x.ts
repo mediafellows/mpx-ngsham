@@ -43,6 +43,7 @@ module NgSham {
         var
 
         attrs = tElement[0].attributes,
+
         cachedAttributes = {
           boundProperties: {},
           boundEvents: {},
@@ -83,13 +84,13 @@ module NgSham {
       // TODO: Should be abstract for ngshambles!!
       // New Sham should not require ___ in templates. See https://github.com/hannahhoward/a1atscript...
 
-      if (templateString || !controllerAs) return false
+      if (!templateString || !controllerAs) return null
 
       var
-      replaceAttrKnown        = "$1=\"$2#{controllerAs}.$3",
-      replaceAttrCustom       = "$1$2$3=\"$4#{controllerAs}.$5",
-      replaceInterpolation    = "$1#{controllerAs}.$2",
-      replaceNgFor            = "ng-repeat=\"$3 in #{controllerAs}.$5",
+      replaceAttrKnown        = '$1=\"$2' + controllerAs + '.$3',
+      replaceAttrCustom       = '$1$2$3=\"$4' + controllerAs + '.$5',
+      replaceInterpolation    = '$1' + controllerAs + '.$2',
+      replaceNgFor            = 'ng-repeat=\"$3 in ' + controllerAs + '.$5',
       templateString          = templateString.replace(/bind-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, '[$1]="$2"'),
 
       templateString          = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"");
@@ -97,7 +98,7 @@ module NgSham {
       templateString          = templateString.replace(/(hidden)="/g, 'ng-hide="');
 
       if (autoNamespace) {
-        templateString        = templateString.replace(/___/g, "#{controllerAs}.");
+        templateString        = templateString.replace(/___/g, controllerAs + '.');
         templateString        = templateString.replace(/(ng-click|ng-if|ng-change|ng-hide)="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrKnown);
         templateString        = templateString.replace(/([\(\[])([a-zA-Z0-9-_]+)([\)\]])="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrCustom);
         templateString        = templateString.replace(/((\*ng-for="#)([a-zA-Z0-9-_]+)( of )([a-zA-Z0-9-_]+))/g, replaceNgFor);
@@ -145,6 +146,8 @@ module NgSham {
         var
         watchedProperties = [],
         watchedExpressions = [];
+
+        console.log(cachedAttributes.boundProperties);
 
         _.each(cachedAttributes.boundProperties, function (v,p) {
           watchedProperties.push(p);
@@ -209,12 +212,12 @@ module NgSham {
       this.CDO.ng1Name     = util.dash2Camel(prefixedName);
       this.CDO.restrict    = isDecorator ? 'A' : 'E';
       this.CDO.annotations = {
-        properties: [],
+        properties: ['title'],
         events:     ['change', 'close', 'save', 'destroy'],
         host:       ['click']
       };
 
-      if (this.CDO.templateUrl)
+      if (typeof this.CDO.templateUrl === 'string')
         util.noop();
       else if (isDecorator)
         this.CDO.templateUrl = null;
@@ -233,7 +236,9 @@ module NgSham {
         this.CDO.annotations.host.push(x); // TODO: Disallow duplicates!!!
       });
 
-      angular.module(this.config.appName, []).directive(this.CDO.ng1Name, this.DDO(this.CDO));
+      if (this.config.verbose) console.log(this.CDO.ng1Name, this.CDO, this.DDO(this.CDO)());
+
+      angular.module(this.config.appName).directive(this.CDO.ng1Name, this.DDO(this.CDO));
     }
   }
 }

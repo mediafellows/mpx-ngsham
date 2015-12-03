@@ -7,6 +7,7 @@ declare var NgShamFactory: any;
  */
 interface ComponentCreator {
   component: Function;
+  bootstrap: Function;
 }
 
 /**
@@ -60,7 +61,7 @@ interface ShamCDO {
   properties: Array<string>;
   events: Array<string>;
   host: Array<string>;
-  class: Function;
+  class: any;
   inject: Array<string>;
   annotations: ShamAnnotationsObject;
   autoNamespace: boolean;
@@ -91,4 +92,5 @@ interface ShamConfigObject {
   angularVersion: number;
   componentsDir: string;
   forceUseComponentCreator: any;
+  verbose: boolean;
 }
