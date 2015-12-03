@@ -107,9 +107,8 @@ do (window) ->
       replaceAttrCustom     = "$1$2$3=\"$4#{controllerAs}.$5"
       replaceInterpolation  = "$1#{controllerAs}.$2"
       replaceNgFor          = "ng-repeat=\"$3 in #{controllerAs}.$5"
-      templateString        = templateString.replace(/ng-bind-html/g, 'savebindhtml')
       templateString        = templateString.replace(/bind-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, '[$1]="$2"')
-      templateString        = templateString.replace(/savebindhtml/g, 'ng-bind-html')
+      templateString        = templateString.replace(/ng-\[html\]/g, 'ng-bind-html')
       templateString        = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"")
       templateString        = templateString.replace(/\((click)\)/g, 'ng-click')
       templateString        = templateString.replace(/(hidden)="/g, 'ng-hide="')
