@@ -8,7 +8,7 @@ var Component = NgSham.decorators.Component;
   selector: 'hoge/[piyo]'
 })
 class Piyo {
-  public fuga = 'This is the value of the "fuga" property on Piyo\'s controller.'
+  public fuga = 'These words are the value of the "fuga" property on Piyo\'s controller.'
   constructor () {
 
   }
