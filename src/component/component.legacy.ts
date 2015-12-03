@@ -1,4 +1,4 @@
-namespace NgSham {
+module NgSham {
   export class ComponentLegacy extends AbstractComponentOneX {
     protected DDO () {
 

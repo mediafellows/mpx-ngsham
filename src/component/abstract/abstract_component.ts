@@ -1,4 +1,5 @@
-namespace NgSham {
+module NgSham {
+
   export abstract class AbstractComponent {
 
     protected config: ShamConfigObject;
@@ -9,44 +10,19 @@ namespace NgSham {
       this.config = config;
     }
 
-    public component (name: string, userlandCDOorClass: any) {
+    public component (name: string, CDOorFn: any) {
       this.name = name;
-      this.CDO = typeof userlandCDOorClass === 'function'
-        ? this.cdoFromFunction(userlandCDOorClass)
-        : this.cdoFromUserlandCDO(userlandCDOorClass);
-
-      this.CDO.class = NgSham.ann.deAnnotate(this.CDO.class);
-
+      this.CDO = typeof CDOorFn === 'function'
+        ? NgSham.util.coerceToShamCDO({class: CDOorFn})
+        : NgSham.util.coerceToShamCDO(CDOorFn);
       this.createComponent();
     }
 
-    protected cdoFromFunction (fn: Function): ShamCDO {
-      return this.cdoFromUserlandCDO({class: fn});
-    }
-
-    protected cdoFromUserlandCDO (userlandCDO): ShamCDO {
-      var CDO: ShamCDO = {
-        selector:       userlandCDO.selector        || '',
-        ng1Name:        userlandCDO.ng1Name         || '',
-        restrict:       userlandCDO.restrict        || '',
-        templateUrl:    userlandCDO.templateUrl     || false,
-        properties:     userlandCDO.properties      || [],
-        events:         userlandCDO.events          || [],
-        host:           userlandCDO.host            || [],
-        class:          userlandCDO.class           || function () {},
-        inject:         userlandCDO.inject          || [],
-        annotations: {
-          properties:   userlandCDO.properties      || [],
-          events:       userlandCDO.events          || [],
-          host:         userlandCDO.host            || []
-        },
-        autoNamespace:  userlandCDO.autoNamespace   || false,
-        isDecorator:    userlandCDO.isDecorator     || true
-      }
-      return CDO;
+    public bootstrap (controller) {
+      var CDO: ShamCDO = NgSham.reflect.deAnnotate(controller);
+      this.component(CDO.selector, CDO);
     }
 
     protected abstract createComponent (): void;
-
   }
 }

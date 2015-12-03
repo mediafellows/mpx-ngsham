@@ -1,4 +1,4 @@
-namespace NgSham {
+module NgSham {
   export abstract class AbstractComponentOneX extends AbstractComponent {
 
     // TODO: Split this class into: AbstractAnyComponent, AbstractShambolicComponent, AbstractShamComponent
@@ -39,7 +39,9 @@ namespace NgSham {
      */
     protected compile (ng1Name: string, annotations: ShamAnnotationsObject, autoNamespace: boolean): Function {
       return (tElement: jQLiteElement|jQueryElement) => { // TODO: Use the real jQ types here!!!
+
         var
+
         attrs = tElement[0].attributes,
         cachedAttributes = {
           boundProperties: {},
@@ -47,18 +49,18 @@ namespace NgSham {
           staticAttrs: {}
         };
 
-        _.each(attrs, (a) => {
+        _.each(attrs, (a, i) => {
           var
-          name = attrs[a].name,
-          value = attrs[a].value;
+          name = attrs[i].name,
+          value = attrs[i].value;
 
-          if (!_.empty(name) && !NgSham.util.isNg2Attr(name) && name != ng1Name) {
+          if (name && !NgSham.util.isNg2Attr(name) && name != ng1Name) {
             cachedAttributes.staticAttrs[name] = value;
           } else {
-            if (!_.empty(name) && NgSham.util.isNg2P(name)) {
+            if (name && NgSham.util.isNg2P(name)) {
               cachedAttributes.boundProperties[util.dash2Camel(name.replace(/^bind-|[\[\]]/g, ''))] = value;
             }
-            if (!_.empty(name) && NgSham.util.isNg2E(name)) {
+            if (name && NgSham.util.isNg2E(name)) {
               cachedAttributes.boundEvents[name.replace(/^on-/, '')] = value
             }
           }
@@ -81,7 +83,7 @@ namespace NgSham {
       // TODO: Should be abstract for ngshambles!!
       // New Sham should not require ___ in templates. See https://github.com/hannahhoward/a1atscript...
 
-      if (_.empty(templateString) || _.empty(controllerAs)) return false
+      if (templateString || !controllerAs) return false
 
       var
       replaceAttrKnown        = "$1=\"$2#{controllerAs}.$3",
@@ -130,7 +132,7 @@ namespace NgSham {
         // If some "host" events were given, make them work as expected.
 
         _.each(annotations.host, function (h) {
-          if (!_.empty(attrs[annotations.host[h]])) {
+          if (attrs[annotations.host[h]]) {
             (function (h) {
               element.on(annotations.host[h], () => {
                 ctrl[util.deParen(attrs[annotations.host[h]])]();
@@ -177,7 +179,7 @@ namespace NgSham {
         if (typeof transclude === 'function') {
           transclude(function (clones) {
             angular.forEach(clones, function (clone) {
-              if (!_.empty(clone.tagName)) {
+              if (clone.tagName) {
                 var
                 selector = clone.tagName,
                 destination = element.find('[transclude-id="' + selector.toLowerCase() + '"]');
@@ -230,8 +232,6 @@ namespace NgSham {
       _.each(this.CDO.host, function (x) {
         this.CDO.annotations.host.push(x); // TODO: Disallow duplicates!!!
       });
-
-      console.log(this.CDO.ng1Name);
 
       angular.module(this.config.appName, []).directive(this.CDO.ng1Name, this.DDO(this.CDO));
     }

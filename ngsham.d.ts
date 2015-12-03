@@ -45,6 +45,7 @@ interface Window {
   ngshim: any;
   ngshambles: any;
   angular: any;
+  bootstrap: Function;
 }
 
 /**

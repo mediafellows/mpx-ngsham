@@ -1,4 +1,4 @@
-namespace NgSham {
+module NgSham {
   export namespace util {
 
     export function noop (): void {};
@@ -28,5 +28,27 @@ namespace NgSham {
     export function deParen (s: string): string {
       return s.replace(/[\(\)]/g, '');
     };
+
+    export function coerceToShamCDO (sth): ShamCDO {
+      var CDO: ShamCDO = {
+        selector:       sth.selector        || '',
+        ng1Name:        sth.ng1Name         || '',
+        restrict:       sth.restrict        || '',
+        templateUrl:    sth.templateUrl     || false,
+        properties:     sth.properties      || [],
+        events:         sth.events          || [],
+        host:           sth.host            || [],
+        class:          sth.class           || function () {},
+        inject:         sth.inject          || [],
+        annotations: {
+          properties:   sth.properties      || [],
+          events:       sth.events          || [],
+          host:         sth.host            || []
+        },
+        autoNamespace:  sth.autoNamespace   || false,
+        isDecorator:    sth.isDecorator     || true
+      }
+      return CDO;
+    }
   }
 }

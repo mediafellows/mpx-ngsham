@@ -1,23 +1,21 @@
-namespace reflection {
-  // TODO: Do Typescript namespaces get CamelCase? ...or no?
-  // TODO: Esprima is too heavy. Can we find a lightweight reflection library? ...or else DIY?
-
-  /**
-   * Stringify a function and return its params.
-   * @param  {function}      fn
-   * @return {Array<string>}
-   */
-  export function reflectParams (fn: Function): Array<string> {
-
-
-  }
-
-  /**
-   * Take a decorated (Typescript) class and return its decorations.
-   * @param  {Object} decoratedClass
-   * @return {Object}
-   */
-  export function reflectDecor (decoratedClass: Function): TypeScriptDecorationsESxObject {
-
+module NgSham {
+  export namespace reflect {
+    export function deAnnotate (c: any): ShamCDO {
+      var i = new c(), CDO: ShamCDO = {
+        selector:       c.prototype.selector      || '',
+        ng1Name:        c.prototype.ng1Name       || '',
+        restrict:       c.prototype.restrict      || '',
+        templateUrl:    c.prototype.templateUrl   || false,
+        properties:     c.prototype.properties    || [],
+        events:         c.prototype.events        || [],
+        host:           c.prototype.host          || [],
+        class:          c.prototype.class         || function () {},
+        inject:         c.prototype.inject        || [],
+        annotations:    c.prototype.annotations   || {},
+        autoNamespace:  c.prototype.autoNamespace || true,
+        isDecorator:    c.prototype.isDecorator   || true,
+      };
+      return CDO;
+    }
   }
 }
