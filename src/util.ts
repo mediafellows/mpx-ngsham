@@ -45,7 +45,7 @@ module NgSham {
           events:       sth.events          || [],
           host:         sth.host            || []
         },
-        autoNamespace:  sth.autoNamespace   || true,
+        autoNamespace:  sth.autoNamespace   === false ? false : true,
         isDecorator:    sth.isDecorator     || true
       }
       return CDO;
