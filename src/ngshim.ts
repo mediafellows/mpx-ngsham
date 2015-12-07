@@ -7,7 +7,6 @@ module NgSham {
    * @param  {[type]} componentsDir
    * @return {[type]}
    */
-
   window.ngshim = function (appName, angularVersion, componentsDir, verbose = false) {
 
     var sham = NgSham.NgShamFactory.getInstance();

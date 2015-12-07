@@ -8,6 +8,9 @@ var Component = NgSham.decorators.Component;
   selector: 'hoge/[piyo]'
 })
 class Piyo {
+
+  @fooDecorator()
+
   public fuga = 'These words are the value of the "fuga" property on Piyo\'s controller.'
   constructor () {
 
