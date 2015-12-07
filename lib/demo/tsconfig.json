@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "noImplicitAny": false,
+    "declaration": false,
+    "target": "ES5",
+    "outDir": "./tmp",
+    "sourceMap": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "filesGlob": [
+    "./demo.d.ts",
+    "./src/*.ts",
+    "./src/**/*.ts"
+  ],
+  "files": [
+    "./demo.d.ts",
+    "./src/components/hoge/piyo/piyo.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true,
+    "compileOnSave": false
+  }
+}
