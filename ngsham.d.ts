@@ -8,6 +8,7 @@ declare var NgShamFactory: any;
 interface ComponentCreator {
   component: Function;
   bootstrap: Function;
+  fact: Function;
 }
 
 /**

@@ -27,6 +27,8 @@ module NgSham {
       verbose: verbose
     }).bind(sham.componentCreator);
 
+    window.ngshambles.fact = sham.fact().bind(sham.componentCreator);
+
     window.bootstrap = function (controller) {
       sham.shimb(controller);
     }.bind(sham.componentCreator);

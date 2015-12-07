@@ -22,6 +22,9 @@ var NgSham;
         NgShamFactory.prototype.shimb = function (controller) {
             this.componentCreator.bootstrap(controller);
         };
+        NgShamFactory.prototype.fact = function () {
+            return this.componentCreator.fact;
+        };
         NgShamFactory.prototype.version = function () {
             if (!this.config.angularVersion && window.angular)
                 this.config.angularVersion = window.angular.version;
@@ -381,6 +384,9 @@ var NgSham;
                 return DDO;
             };
         };
+        ComponentLegacy.prototype.fact = function () {
+            angular.module(this.config.appName).factory(name, this.inject(this.CDO.class, this.CDO.inject));
+        };
         return ComponentLegacy;
     })(NgSham.AbstractComponentOneX);
     NgSham.ComponentLegacy = ComponentLegacy;
@@ -404,6 +410,7 @@ var NgSham;
             forceUseComponentCreator: 'ComponentLegacy',
             verbose: verbose
         }).bind(sham.componentCreator);
+        window.ngshambles.fact = sham.fact().bind(sham.componentCreator);
         window.bootstrap = function (controller) {
             sham.shimb(controller);
         }.bind(sham.componentCreator);
