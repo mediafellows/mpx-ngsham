@@ -22,9 +22,6 @@ var NgSham;
         NgShamFactory.prototype.shimb = function (controller) {
             this.componentCreator.bootstrap(controller);
         };
-        NgShamFactory.prototype.fact = function () {
-            return this.componentCreator.fact;
-        };
         NgShamFactory.prototype.version = function () {
             if (!this.config.angularVersion && window.angular)
                 this.config.angularVersion = window.angular.version;
@@ -233,7 +230,7 @@ var NgSham;
         };
         AbstractComponentOneX.prototype.linkFn = function (annotations, cachedAttributes, name) {
             return function (scope, element, attrs, ctrl, transclude) {
-                _.each(cachedAttributes.boundEvents, function (a, v) {
+                _.each(cachedAttributes.boundEvents, function (v, a) {
                     (function (a, v) {
                         ctrl[NgSham.util.deParen(NgSham.util.dash2Camel(a))] = function () {
                             scope.$eval(v);
@@ -250,12 +247,11 @@ var NgSham;
                     }
                 });
                 var watchedProperties = [], watchedExpressions = [];
-                console.log(cachedAttributes.boundProperties);
                 _.each(cachedAttributes.boundProperties, function (v, p) {
                     watchedProperties.push(p);
                     watchedExpressions.push(v);
                 });
-                _.each(cachedAttributes.staticAttrs, function (a, v) {
+                _.each(cachedAttributes.staticAttrs, function (v, a) {
                     ctrl[NgSham.util.dash2Camel(a)] = v;
                 });
                 scope.$watchGroup(watchedExpressions, function (newVal, oldVal) {
@@ -288,9 +284,10 @@ var NgSham;
             };
         };
         AbstractComponentOneX.prototype.createComponent = function () {
-            var selectorParts = this.name.split('/'), selector = selectorParts.pop(), isDecorator = selector.indexOf('[') == 0, nativeName = NgSham.util.deBracket(selector), prefix = selectorParts.pop(), prefixedName = prefix + '-' + nativeName;
-            this.CDO.ng1Name = NgSham.util.dash2Camel(prefixedName);
-            this.CDO.restrict = isDecorator ? 'A' : 'E';
+            var selectorParts = this.name.split('/'), selector = selectorParts.pop(), nativeName = NgSham.util.deBracket(selector), prefix = selectorParts.pop(), prefixedName = prefix + '-' + nativeName;
+            this.CDO.isDecorator = selector.indexOf('[') == 0,
+                this.CDO.ng1Name = NgSham.util.dash2Camel(prefixedName);
+            this.CDO.restrict = this.CDO.isDecorator ? 'A' : 'E';
             this.CDO.annotations = {
                 properties: ['title'],
                 events: ['change', 'close', 'save', 'destroy'],
@@ -298,7 +295,7 @@ var NgSham;
             };
             if (typeof this.CDO.templateUrl === 'string')
                 NgSham.util.noop();
-            else if (isDecorator)
+            else if (this.CDO.isDecorator)
                 this.CDO.templateUrl = null;
             else
                 this.CDO.templateUrl = this.config.componentsDir + selectorParts.join('/') + prefix + '/' + nativeName + '/' + nativeName + '.html';
@@ -384,9 +381,6 @@ var NgSham;
                 return DDO;
             };
         };
-        ComponentLegacy.prototype.fact = function () {
-            angular.module(this.config.appName).factory(name, this.inject(this.CDO.class, this.CDO.inject));
-        };
         return ComponentLegacy;
     })(NgSham.AbstractComponentOneX);
     NgSham.ComponentLegacy = ComponentLegacy;
@@ -410,7 +404,6 @@ var NgSham;
             forceUseComponentCreator: 'ComponentLegacy',
             verbose: verbose
         }).bind(sham.componentCreator);
-        window.ngshambles.fact = sham.fact().bind(sham.componentCreator);
         window.bootstrap = function (controller) {
             sham.shimb(controller);
         }.bind(sham.componentCreator);

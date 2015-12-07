@@ -34,10 +34,6 @@ module NgSham {
       this.componentCreator.bootstrap(controller);
     }
 
-    public fact () {
-      return this.componentCreator.fact;
-    }
-
     private version (): string {
            if (!this.config.angularVersion && window.angular) this.config.angularVersion = window.angular.version;
            if (this.config.angularVersion >  1.5) return 'ComponentTwoAlpha'

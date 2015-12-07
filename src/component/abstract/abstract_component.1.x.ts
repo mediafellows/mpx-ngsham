@@ -122,7 +122,7 @@ module NgSham {
         // Start activating the attrs cached over from compile phase;
         // "parentheticals" get controller methods.
 
-        _.each(cachedAttributes.boundEvents, function (a,v) {
+        _.each(cachedAttributes.boundEvents, function (v,a) {
           (function (a,v) {
             ctrl[util.deParen(util.dash2Camel(a))] = function () {
               scope.$eval(v);
@@ -147,14 +147,12 @@ module NgSham {
         watchedProperties = [],
         watchedExpressions = [];
 
-        console.log(cachedAttributes.boundProperties);
-
         _.each(cachedAttributes.boundProperties, function (v,p) {
           watchedProperties.push(p);
           watchedExpressions.push(v);
         });
 
-        _.each(cachedAttributes.staticAttrs, function (a,v) {
+        _.each(cachedAttributes.staticAttrs, function (v,a) {
           ctrl[util.dash2Camel(a)] = v;
         });
 
@@ -204,13 +202,13 @@ module NgSham {
 
       selectorParts = this.name.split('/'),
       selector      = selectorParts.pop(),
-      isDecorator   = selector.indexOf('[') == 0,
       nativeName    = util.deBracket(selector),
       prefix        = selectorParts.pop(),
       prefixedName  = prefix + '-' + nativeName;
 
+      this.CDO.isDecorator = selector.indexOf('[') == 0,
       this.CDO.ng1Name     = util.dash2Camel(prefixedName);
-      this.CDO.restrict    = isDecorator ? 'A' : 'E';
+      this.CDO.restrict    = this.CDO.isDecorator ? 'A' : 'E';
       this.CDO.annotations = {
         properties: ['title'],
         events:     ['change', 'close', 'save', 'destroy'],
@@ -219,7 +217,7 @@ module NgSham {
 
       if (typeof this.CDO.templateUrl === 'string')
         util.noop();
-      else if (isDecorator)
+      else if (this.CDO.isDecorator)
         this.CDO.templateUrl = null;
       else
         this.CDO.templateUrl = this.config.componentsDir + selectorParts.join('/') + prefix + '/' + nativeName + '/' + nativeName + '.html';

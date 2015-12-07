@@ -16,8 +16,5 @@ module NgSham {
         return DDO;
       }
     }
-    public fact () {
-      angular.module(this.config.appName).factory(name, this.inject(this.CDO.class, this.CDO.inject));
-    }
   }
 }
