@@ -216,9 +216,10 @@ var NgSham;
         AbstractComponentOneX.prototype.convertTemplate = function (templateString, controllerAs, autoNamespace) {
             if (!templateString || !controllerAs)
                 return null;
-            var replaceAttrKnown = '$1=\"$2' + controllerAs + '.$3', replaceAttrCustom = '$1$2$3=\"$4' + controllerAs + '.$5', replaceInterpolation = '$1' + controllerAs + '.$2', replaceNgFor = 'ng-repeat=\"$3 in ' + controllerAs + '.$5', templateString = templateString.replace(/bind-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, '[$1]="$2"'), templateString = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"");
+            var replaceAttrKnown = '$1=\"$2' + controllerAs + '.$3', replaceAttrCustom = '$1$2$3=\"$4' + controllerAs + '.$5', replaceInterpolation = '$1' + controllerAs + '.$2', replaceNgFor = 'ng-repeat=\"$3 in ' + controllerAs + '.$5', templateString = templateString.replace(/ng-bind-html/g, 'savebindhtml'), templateString = templateString.replace(/bind-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, '[$1]="$2"'), templateString = templateString.replace(/on-([a-zA-Z0-9-_]+)="([a-zA-Z0-9-_]+)/g, "($1)=\"$2\"");
             templateString = templateString.replace(/\((click)\)/g, 'ng-click');
             templateString = templateString.replace(/(hidden)="/g, 'ng-hide="');
+            templateString = templateString.replace(/savebindhtml/g, 'ng-bind-html');
             if (autoNamespace) {
                 templateString = templateString.replace(/___/g, controllerAs + '.');
                 templateString = templateString.replace(/(ng-click|ng-if|ng-change|ng-hide)="(!|)([a-zA-Z0-9-_]+)/g, replaceAttrKnown);
