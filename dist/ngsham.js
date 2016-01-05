@@ -184,6 +184,7 @@ var NgSham;
             _super.apply(this, arguments);
         }
         AbstractComponentOneX.prototype.reflectParams = function (fn) {
+            throw new Error('Not implemented');
         };
         AbstractComponentOneX.prototype.inject = function (fn, deps) {
             fn['$inject'] = deps;
@@ -287,6 +288,7 @@ var NgSham;
             };
         };
         AbstractComponentOneX.prototype.createComponent = function () {
+            var _this = this;
             var selectorParts = this.name.split('/'), selector = selectorParts.pop(), nativeName = NgSham.util.deBracket(selector), prefix = selectorParts.pop(), prefixedName = prefix + '-' + nativeName;
             this.CDO.isDecorator = selector.indexOf('[') == 0,
                 this.CDO.ng1Name = NgSham.util.dash2Camel(prefixedName);
@@ -303,13 +305,13 @@ var NgSham;
             else
                 this.CDO.templateUrl = this.config.componentsDir + selectorParts.join('/') + prefix + '/' + nativeName + '/' + nativeName + '.html';
             _.each(this.CDO.properties, function (x) {
-                this.CDO.annotations.properties.push(x);
+                _this.CDO.annotations.properties.push(x);
             });
             _.each(this.CDO.events, function (x) {
-                this.CDO.annotations.events.push(x);
+                _this.CDO.annotations.events.push(x);
             });
             _.each(this.CDO.host, function (x) {
-                this.CDO.annotations.host.push(x);
+                _this.CDO.annotations.host.push(x);
             });
             if (this.config.verbose)
                 console.log(this.CDO.ng1Name, this.CDO, this.DDO(this.CDO)());
@@ -326,6 +328,9 @@ var NgSham;
         function ComponentOneThree() {
             _super.apply(this, arguments);
         }
+        ComponentOneThree.prototype.DDO = function () {
+            throw new Error('Not implemented');
+        };
         return ComponentOneThree;
     })(NgSham.AbstractComponentOneX);
     NgSham.ComponentOneThree = ComponentOneThree;
@@ -337,6 +342,9 @@ var NgSham;
         function ComponentOneFour() {
             _super.apply(this, arguments);
         }
+        ComponentOneFour.prototype.DDO = function () {
+            throw new Error('Not implemented');
+        };
         return ComponentOneFour;
     })(NgSham.AbstractComponentOneX);
     NgSham.ComponentOneFour = ComponentOneFour;
@@ -348,6 +356,9 @@ var NgSham;
         function ComponentOneFive() {
             _super.apply(this, arguments);
         }
+        ComponentOneFive.prototype.DDO = function () {
+            throw new Error('Not implemented');
+        };
         return ComponentOneFive;
     })(NgSham.AbstractComponentOneX);
     NgSham.ComponentOneFive = ComponentOneFive;
@@ -359,6 +370,9 @@ var NgSham;
         function ComponentTwoAlpha() {
             _super.apply(this, arguments);
         }
+        ComponentTwoAlpha.prototype.createComponent = function () {
+            throw new Error('Not implemented');
+        };
         return ComponentTwoAlpha;
     })(NgSham.AbstractComponent);
     NgSham.ComponentTwoAlpha = ComponentTwoAlpha;

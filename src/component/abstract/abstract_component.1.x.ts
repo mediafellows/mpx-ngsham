@@ -224,15 +224,15 @@ module NgSham {
       else
         this.CDO.templateUrl = this.config.componentsDir + selectorParts.join('/') + prefix + '/' + nativeName + '/' + nativeName + '.html';
 
-      _.each(this.CDO.properties, function (x) {
+      _.each(this.CDO.properties, (x) => {
         this.CDO.annotations.properties.push(x); // TODO: Disallow duplicates!!!
       });
 
-      _.each(this.CDO.events, function (x) {
+      _.each(this.CDO.events, (x) => {
         this.CDO.annotations.events.push(x); // TODO: Disallow duplicates!!!
       });
 
-      _.each(this.CDO.host, function (x) {
+      _.each(this.CDO.host, (x) => {
         this.CDO.annotations.host.push(x); // TODO: Disallow duplicates!!!
       });
 
