@@ -51,6 +51,8 @@ var NgSham;
                     target.prototype.selector = partialCDO.selector;
                 if (partialCDO.properties)
                     target.prototype.properties = partialCDO.properties;
+                if (partialCDO.templateUrl)
+                    target.prototype.properties = partialCDO.templateUrl;
                 if (partialCDO.events)
                     target.prototype.events = partialCDO.events;
                 if (partialCDO.host)
