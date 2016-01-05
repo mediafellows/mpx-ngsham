@@ -21,5 +21,11 @@ module NgSham {
         return target;
       }
     }
+
+    export function Ng1Inject (inject) {
+      return function (target) {
+        target.prototype.inject = inject;
+      }
+    }
   }
 }
