@@ -9,7 +9,7 @@ module NgSham {
      * @return {Array<string>}
      */
     protected reflectParams (fn: Function): Ng1InjectionParams {
-
+      throw new Error('Not implemented');
     }
 
     /**
