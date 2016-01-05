@@ -10,7 +10,7 @@ module NgSham {
           target.prototype.properties = partialCDO.properties;
 
         if (partialCDO.templateUrl)
-          target.prototype.properties = partialCDO.templateUrl;
+          target.prototype.templateUrl = partialCDO.templateUrl;
 
         if (partialCDO.events)
           target.prototype.events = partialCDO.events;
