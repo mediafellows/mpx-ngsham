@@ -126,8 +126,13 @@ module NgSham {
 
         _.each(cachedAttributes.boundEvents, function (v,a) {
           (function (a,v) {
-            ctrl[util.deParen(util.dash2Camel(a))] = function () {
-              scope.$eval(v);
+            ctrl[util.deParen(util.dash2Camel(a))] = function (...localArgs) {
+              let fnReflect = v.replace(')', '').split('(');
+              let passedArgs = _.map(fnReflect[1].split(','), function (varName) {
+                return scope.$eval(varName);
+              });
+              passedArgs['$events'] = localArgs;
+              scope[fnReflect[0]].call(scope, passedArgs);
             }
           }(a,v));
         });
