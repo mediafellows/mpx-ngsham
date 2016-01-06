@@ -119,6 +119,8 @@ module NgSham {
      * @return {Function}
      */
     protected linkFn (annotations: ShamAnnotationsObject, cachedAttributes: any, name: string): Function { // TODO: Define interface for CachedAttributes...
+      var self = this;
+
       return function (scope, element, attrs, ctrl, transclude) {
 
         // Start activating the attrs cached over from compile phase;
@@ -127,7 +129,11 @@ module NgSham {
         _.each(cachedAttributes.boundEvents, function (v,a) {
           (function (a,v) {
             ctrl[util.deParen(util.dash2Camel(a))] = function () {
-              scope.$eval(v);
+              var $parse = angular.injector([self.config.appName]).get('$parse');
+              var fn = $parse(v);
+              var args = [].slice.call(arguments);
+              var event = { data: args };
+              fn(scope, { $event: event });
             }
           }(a,v));
         });
