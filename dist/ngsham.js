@@ -239,11 +239,16 @@ var NgSham;
             return templateString;
         };
         AbstractComponentOneX.prototype.linkFn = function (annotations, cachedAttributes, name) {
+            var self = this;
             return function (scope, element, attrs, ctrl, transclude) {
                 _.each(cachedAttributes.boundEvents, function (v, a) {
                     (function (a, v) {
                         ctrl[NgSham.util.deParen(NgSham.util.dash2Camel(a))] = function () {
-                            scope.$eval(v);
+                            var $parse = angular.injector([self.config.appName]).get('$parse');
+                            var fn = $parse(v);
+                            var args = [].slice.call(arguments);
+                            var event = { data: args };
+                            fn(scope, { $event: event });
                         };
                     }(a, v));
                 });
